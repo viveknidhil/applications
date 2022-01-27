@@ -14,7 +14,7 @@ spec:
         app: catping
     spec:
       containers:
-      - image: docker.io/viveknidhi22/catping
+      - image: docker.io/viveknidhi22/catping:1
         name: catping
         ports:
         - containerPort: 80
