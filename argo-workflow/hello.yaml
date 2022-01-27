@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: simple-build-
+spec:
+  entrypoint: buildah
+  templates:
+  - name: buildah
+    metadata:
+      annotations:
+        container.apparmor.security.beta.kubernetes.io/main: localhost/containerized_buildah   
+    container:
+      image: registry.opensuse.org/home/flavio_castelli/containers/containers/buildahimage:latest
+      command: ["/bin/sh"]
+      args: ["-c", "cd code; cd $(readlink checkout); buildah bud -t guestbook ."]
+      volumeMounts:
+        - name: code
+          mountPath: /code
+      resources:
+        limits:
+          github.com/fuse: 1
+    initContainers:
+    - name: git-sync
+      image: k8s.gcr.io/git-sync/git-sync:v3.1.7
+      args: [
+        "--one-time",
+        "--depth", "1",
+        "--dest", "checkout",
+        "--repo", "https://github.com/flavio/guestbook-go.git",
+        "--branch", "master"]
+      volumeMounts:
+        - name: code
+          mountPath: /tmp/git
+    volumes:
+    - name: code
+      emptyDir:
+        medium: Memory
