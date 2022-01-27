@@ -14,7 +14,7 @@ spec:
         app: guestbook-ui-viv
     spec:
       containers:
-      - image: viveknidhi22/catping
+      - image: docker.io/viveknidhi22/catping
         name: guestbook-ui-viv
         ports:
         - containerPort: 80
