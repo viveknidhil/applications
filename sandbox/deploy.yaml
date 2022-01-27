@@ -1,33 +1,33 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: guestbook-ui-viv
+  name: catping
 spec:
   replicas: 1
   revisionHistoryLimit: 3
   selector:
     matchLabels:
-      app: guestbook-ui-viv
+      app: catping
   template:
     metadata:
       labels:
-        app: guestbook-ui-viv
+        app: catping
     spec:
       containers:
       - image: docker.io/viveknidhi22/catping
-        name: guestbook-ui-viv
+        name: catping
         ports:
         - containerPort: 80
       imagePullSecrets:
-        - name: regcred  
+        - name: regcred 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: guestbook-ui-viv
+  name: catping-svc
 spec:
   ports:
   - port: 80
     targetPort: 80
   selector:
-    app: guestbook-ui-viv        
+    app: catping      
